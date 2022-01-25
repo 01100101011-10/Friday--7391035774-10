@@ -97,10 +97,8 @@ class Prog(object):
 def eval_func(individual):
     global robot, pset
 
-    # Transform the tree expression to functionnal Python code
     routine = gp.compile(individual, pset)
 
-    # Run the generated routine
     robot.run(routine)
     return robot.consumed,
 
@@ -120,10 +118,8 @@ def create_toolbox():
 
     toolbox = base.Toolbox()
 
-    # Attribute generator
     toolbox.register("expr_init", gp.genFull, pset=pset, min_=1, max_=2)
 
-    # Structure initializers
     toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr_init)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
@@ -138,39 +134,30 @@ def create_toolbox():
 if __name__ == "__main__":
     global robot
 
-    # Seed the random number generator
     random.seed(7)
 
-    # Define the maximum number of moves
     max_moves = 750
 
-    # Create the robot object
     robot = RobotController(max_moves)
 
-    # Create the toolbox
     toolbox = create_toolbox()
     
-    # Read the map data
     with open('target_map.txt', 'r') as f:
       robot.traverse_map(f)
     
-    # Define population and hall of fame variables
     population = toolbox.population(n=400)
     hall_of_fame = tools.HallOfFame(1)
 
-    # Register the stats
     stats = tools.Statistics(lambda x: x.fitness.values)
     stats.register("avg", np.mean)
     stats.register("std", np.std)
     stats.register("min", np.min)
     stats.register("max", np.max)
 
-    # Define parameters
     probab_crossover = 0.4
     probab_mutate = 0.3
     num_generations = 50
     
-    # Run the algorithm to solve the problem
     algorithms.eaSimple(population, toolbox, probab_crossover, 
             probab_mutate, num_generations, stats, 
             halloffame=hall_of_fame)
