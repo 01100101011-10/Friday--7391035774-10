@@ -1,0 +1,2 @@
+https://github.com/PacktPublishing/Artificial-Intelligence-with-Python/blob/master/Chapter%2013/code/haar_cascade_files/haarcascade_frontalface_default.xml
+https://github.com/PacktPublishing/Artificial-Intelligence-with-Python/blob/master/Chapter%2013/code/haar_cascade_files/haarcascade_eye.xml
