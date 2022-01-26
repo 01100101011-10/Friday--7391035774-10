@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-#haarcasade is unavailable links will be in the haarcasade folder
+#haarcasade is unavailable links will be in the haarcasade_links.txt
 face_cascade = cv2.CascadeClassifier('haar_cascade_files/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haar_cascade_files/haarcascade_eye.xml')
 
