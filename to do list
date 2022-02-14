@@ -1,5 +1,0 @@
-physical movements have to be improved
-interconnect the wheel system with face tracker so the robot spins to face the person they may be talking to
-add weapon tracker and a lockdown system in response to it
-cooperators face haarscade must be added and hidden from publicity. this will have to be done on a sperate repo.
-speed detector to see how fast something is moving and avoiding it if its too fast - untested folder
