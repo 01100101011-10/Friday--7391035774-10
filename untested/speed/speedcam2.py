@@ -18,7 +18,6 @@ baseDir = mypath[0:mypath.rfind("/")+1]
 baseFileName = mypath[mypath.rfind("/")+1:mypath.rfind(".")]
 progName = os.path.basename(__file__)
 print("----------------------------------------------------------------------")
-print("%s %s   written by Claude Pageau" % (progName, progVer))
 # Color data for OpenCV lines and text
 cvWhite = (255, 255, 255)
 cvBlack = (0, 0, 0)
