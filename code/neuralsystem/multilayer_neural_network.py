@@ -659,7 +659,8 @@ class Network(object):
             self.layers.append(Layer(i, layers[i]))
         # 遍历除去输出层之外的所有层，将连接信息添加到 connections 对象中
         for layer in range(layer_count - 1):
-            connections = [Connection(upstream_node, downstream_node) for upstream_node in self.layers[layer].nodes for downstream_node in self.layers[layer + 1].nodes[:-1]]
+            connections = [Connection(upstream_node, downstream_node) 
+            for upstream_node in self.layers[layer].nodes for downstream_node in self.layers[layer + 1].nodes[:-1]]
             # 遍历 connections，将 conn 添加到 connections 中
             for conn in connections:
                 self.connections.add_connection(conn)
