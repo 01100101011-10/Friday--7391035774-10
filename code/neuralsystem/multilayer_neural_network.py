@@ -236,54 +236,47 @@ import random
 from functools import reduce
 from numpy import *
 
-# sigmoid 函数
+# sigmoid
 def sigmoid(inX):
     '''
     Desc:
-        sigmoid 函数实现
+        sigmoid
     Args:
-        inX --- 输入向量
+        inX --- 
     Returns:
-        对输入向量作用 sigmoid 函数之后得到的输出
+        sigmoid
     '''
     return 1.0 / (1 + exp(-inX))
 
 
-# 定义神经网络的节点类
 class Node(object):
     '''
     Desc:
-        神经网络的节点类
+        unk
     '''
     def __init__(self, layer_index, node_index):
         '''
         Desc:
-            初始化一个节点
+            unk
         Args:
-            layer_index --- 层的索引，也就是表示第几层
-            node_index --- 节点的索引，也就是表示节点的索引
+            layer_index --- 
+            node_index --- 
         Returns:
             None
         '''
-        # 设置节点所在的层的位置
         self.layer_index = layer_index
-        # 设置层中的节点的索引
         self.node_index = node_index
-        # 设置此节点的下游节点，也就是这个节点与下一层的哪个节点相连
         self.downstream = []
-        # 设置此节点的上游节点，也就是哪几个节点的下游节点与此节点相连
         self.upstream = []
-        # 此节点的输出
         self.output = 0
-        # 此节点真实值与计算值之间的差值
         self.delta = 0
 
     def set_output(self, output):
         '''
         Desc:
-            设置节点的 output
+            output
         Args:
-            output --- 节点的 output
+            output --- output
         Returns:
             None
         '''
@@ -292,99 +285,94 @@ class Node(object):
     def append_downstream_connection(self, conn):
         '''
         Desc:
-           添加此节点的下游节点的连接
+           unk
         Args:
-            conn --- 当前节点的下游节点的连接的 list
+            conn --- list
         Returns:
             None
         '''
-        # 使用 list 的 append 方法来将 conn 中的节点添加到 downstream 中
+        # list append conn downstream
         self.downstream.append(conn)
 
     def append_upstream_connection(self, conn):
         '''
         Desc:
-            添加此节点的上游节点的连接
+            unk
         Args:
-            conn ---- 当前节点的上游节点的连接的 list
+            conn ---- list
         Returns:
             None
         '''
-        # 使用 list 的 append 方法来将 conn 中的节点添加到 upstream 中
+        # list append conn upstream
         self.upstream.append(conn)
 
     def calc_output(self):
         '''
         Desc:
-            计算节点的输出，依据 output = sigmoid(wTx)
+            output = sigmoid(wTx)
         Args:
             None
         Returns:
             None
         '''
-        # 使用 reduce() 函数对其中的因素求和
+        # reduce()
         output = reduce(lambda ret, conn: ret + conn.upstream_node.output * conn.weight, self.upstream, 0)
-        # 对上游节点的 output 乘 weights 之后求和得到的结果应用 sigmoid 函数，得到当前节点的 output
+        # output weights sigmoid output
         self.output = sigmoid(output)
 
     def calc_hidden_layer_delta(self):
         '''
         Desc:
-            计算隐藏层的节点的 delta
+            delta
         Args:
-            output --- 节点的 output
+            output --- input
         Returns:
             None
         '''
-        # 根据 https://www.zybuluo.com/hanbingtao/note/476663 的 式4 计算隐藏层的delta
         downstream_delta = reduce(lambda ret, conn: ret + conn.downstream_node.delta * conn.weight, self.downstream, 0.0)
-        # 计算此节点的 delta
+        # delta
         self.delta = self.output * (1 - self.output) * downstream_delta
 
     def calc_output_layer_delta(self, label):
         '''
         Desc:
-            计算输出层的 delta
+            delta
         Args:
-            label --- 输入向量对应的真实标签，不是计算得到的结果
+            label ---
         Returns:
             None
         '''
-        # 就是那输出层的 delta
+        # delta
         self.delta = self.output * (1 - self.output) * (label - self.output)
 
     def __str__(self):
         '''
         Desc:
-            将节点的信息打印出来
+            unk
         Args:
             None
         Returns:
             None
         '''
-        # 打印格式: 第几层 - 第几个节点，output 是多少，delta 是多少
         node_str = '%u-%u: output: %f delta: %f' % (self.layer_index, self.node_index, self.output, self.delta)
-        # 下游节点
         downstream_str = reduce(lambda ret, conn: ret + '\n\t' + str(conn), self.downstream, '')
-        # 上游节点
         upstream_str = reduce(lambda ret, conn: ret + '\n\t' + str(conn), self.upstream, '')
-        # 将本节点 + 下游节点 + 上游节点 的信息打印出来
         return node_str + '\n\tdownstream:' + downstream_str + '\n\tupstream:' + upstream_str
 
 
-# ConstNode 对象，为了实现一个输出恒为 1 的节点（计算偏置项 wb 时需要）
+# ConstNode
 class ConstNode(object):
     '''
     Desc:
-        常数项对象，即相当于计算的时候的偏置项
+        unk
     '''
     def __init__(self, layer_index, node_index):
         '''
         Desc:
-            初始化节点对象
+            unk
         Args:
-            layer_index --- 节点所属的层的编号
-            node_index --- 节点的编号
+            layer_index ---
+            node_index ---
         Returns:
             None
         '''    
@@ -397,46 +385,39 @@ class ConstNode(object):
     def append_downstream_connection(self, conn):
         '''
         Desc:
-            添加一个到下游节点的连接
+            unk
         Args:
-            conn --- 到下游节点的连接                                           
+            conn ---                                         
         Returns:
             None
-        '''
-        # 使用 list 的 append 方法将包含下游节点的 conn 添加到 downstream 中        
+        '''       
         self.downstream.append(conn)
 
 
     def calc_hidden_layer_delta(self):
         '''
         Desc:
-            计算隐藏层的 delta
+            delta
         Args:
             None
         Returns:
             None
         '''
-        # 使用我们的 公式 4 来计算下游节点的 delta，求和
         downstream_delta = reduce(lambda ret, conn: ret + conn.downstream_node.delta * conn.weight, self.downstream, 0.0)
-        # 计算隐藏层的本节点的 delta
         self.delta = self.output * (1 - self.output) * downstream_delta
 
 
     def __str__(self):
         '''
         Desc:
-           将节点信息打印出来
+           unk
         Args:
             None
         Returns:
             None
         '''
-        # 将节点的信息打印出来
-        # 格式 第几层-第几个节点的 output 
         node_str = '%u-%u: output: 1' % (self.layer_index, self.node_index)
-        # 此节点的下游节点的信息
         downstream_str = reduce(lambda ret, conn: ret + '\n\t' + str(conn), self.downstream, '')
-        # 将此节点与下游节点的信息组合，一起打印出来
         return node_str + '\n\tdownstream:' + downstream_str
 
 
