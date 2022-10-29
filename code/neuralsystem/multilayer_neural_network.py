@@ -722,7 +722,7 @@ class Network(object):
         for i in range(len(label)):
             # 计算输出层节点的 delta
             output_nodes[i].calc_output_layer_delta(label[i])
-        # 这个用法就是切片的用法， [-2::-1] 就是将 layers 这个数组倒过来，从没倒过来的时候的倒数第二个元素开始，到翻转过来的倒数第一个数，比如这样: aaa = [1,2,3,4,5,6,7,8,9],bbb = aaa[-2::-1] ==> bbb = [8, 7, 6, 5, 4, 3, 2, 1]
+        # 这个用法就是切片的用法， [-2::-1] 就是将 layers: aaa = [1,2,3,4,5,6,7,8,9],bbb = aaa[-2::-1] ==> bbb = [8, 7, 6, 5, 4, 3, 2, 1]
         # 实际上就是除掉输出层之外的所有层按照相反的顺序进行遍历
         for layer in self.layers[-2::-1]:
             # 遍历每层的所有节点
@@ -2051,3 +2051,4 @@ def test():
 
 def test_gradient_check():
     gradient_check()
+    
