@@ -420,29 +420,22 @@ class ConstNode(object):
         downstream_str = reduce(lambda ret, conn: ret + '\n\t' + str(conn), self.downstream, '')
         return node_str + '\n\tdownstream:' + downstream_str
 
-
-# 神经网络的层对象，负责初始化一层。此外，作为 Node 的集合对象，提供对 Node 集合的操作
 class Layer(object):
     '''
     Desc:
-        神经网络的 Layer 类
+        Layer
     '''
 
     def __init__(self, layer_index, node_count):
         '''
-        Desc:
-            神经网络的层对象的初始化
         Args:
-            layer_index --- 层的索引
-            node_count --- 节点的个数
+            layer_index --- 
+            node_count --- 
         Returns:
             None
         '''
-        # 设置 层的索引
         self.layer_index = layer_index
-        # 设置层中的节点的 list
         self.nodes = []
-        # 将 Node 节点添加到 nodes 中
         for i in range(node_count):
             self.nodes.append(Node(layer_index, i))
         # 将 ConstNode 节点也添加到 nodes 中
