@@ -438,122 +438,99 @@ class Layer(object):
         self.nodes = []
         for i in range(node_count):
             self.nodes.append(Node(layer_index, i))
-        # 将 ConstNode 节点也添加到 nodes 中
         self.nodes.append(ConstNode(layer_index, node_count))
 
     def set_output(self, data):
         '''
         Desc:
-            设置层的输出，当层是输入层时会用到
         Args:
-            data --- 输出的值的 list
+            data --- list
         Returns:
             None
         '''
-        # 设置输入层中各个节点的 output
         for i in range(len(data)):
             self.nodes[i].set_output(data[i])
 
     def calc_output(self):
         '''
         Desc:
-            计算层的输出向量
         Args:
             None
         Returns:
             None
         '''
-        # 遍历本层的所有节点（除去最后一个节点，因为它是恒为常数的偏置项b）
-        # 调用节点的 calc_output 方法来计算输出向量
         for node in self.nodes[:-1]:
             node.calc_output()
 
     def dump(self):
         '''
         Desc:
-            将层信息打印出来
         Args:
             None
         Returns:
             None
         '''
-        # 遍历层的所有的节点 nodes，将节点信息打印出来
         for node in self.nodes:
             print(node)
 
-
-# Connection 对象类，主要负责记录连接的权重，以及这个连接所关联的上下游的节点
 class Connection(object):
     '''
     Desc:
-        Connection 对象，记录连接权重和连接所关联的上下游节点，注意，这里的 connection 没有 s ，不是复数
+        Connection
     '''
     def __init__(self, upstream_node, downstream_node):
         '''
         Desc:
-            初始化 Connection 对象
+            Connection
         Args:
-            upstream_node --- 上游节点
-            downstream_node --- 下游节点
+            upstream_node 
+            downstream_node 
         Returns:
             None
         '''
-        # 设置上游节点
         self.upstream_node = upstream_node
-        # 设置下游节点
         self.downstream_node = downstream_node
-        # 设置权重，这里设置的权重是 -0.1 到 0.1 之间的任何数
         self.weight = random.uniform(-0.1, 0.1)
-        # 设置梯度 为 0.0
         self.gradient = 0.0
 
     def calc_gradient(self):
         '''
         Desc:
-            计算梯度
         Args:
             None
         Returns:
             None
         '''
-        # 下游节点的 delta * 上游节点的 output 计算得到梯度
         self.gradient = self.downstream_node.delta * self.upstream_node.output
 
     def update_weight(self, rate):
         '''
         Desc:
-            根据梯度下降算法更新权重
         Args:
-            rate --- 学习率 / 或者成为步长
+            rate
         Returns:
             None
         '''
-        # 调用计算梯度的函数来将梯度计算出来
         self.calc_gradient()
-        # 使用梯度下降算法来更新权重
         self.weight += rate * self.gradient
 
     def get_gradient(self):
         '''
         Desc:
-            获取当前的梯度
         Args:
             None
         Returns:
-            当前的梯度 gradient 
+            gradient 
         '''
         return self.gradient
 
     def __str__(self):
         '''
         Desc:
-            将连接信息打印出来
         Args:
             None
         Returns:
-            连接信息进行返回
         '''
-        # 格式为: 上游节点的层的索引+上游节点的节点索引 ---> 下游节点的层的索引+下游节点的节点索引，最后一个数是权重
         return '(%u-%u) -> (%u-%u) = %f' % (
             self.upstream_node.layer_index, 
             self.upstream_node.node_index,
@@ -563,7 +540,6 @@ class Connection(object):
 
 
 
-# Connections 对象，提供 Connection 集合操作。
 class Connections(object):
     '''
     Desc:
