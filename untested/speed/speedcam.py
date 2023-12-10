@@ -1492,7 +1492,7 @@ def speed_camera():
                                 # Note cam_location and status may not be in proper order
                                 # Unless speed table is recreated.
                                 try:
-                                    sql_cmd = 'insert into {} values {}'.format(
+                                    sql_cmd = """insert into {} values {}""".format(
                                         DB_TABLE, speed_data
                                     )
                                     db_conn = db_check(DB_PATH)
